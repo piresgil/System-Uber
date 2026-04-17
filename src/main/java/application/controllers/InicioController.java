@@ -142,4 +142,25 @@ public class InicioController {
             e.printStackTrace();
         }
     }
+
+
+    @FXML
+    protected void onclickOnListagemPagamentos() {
+        try {
+            System.out.println("Click");
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/listagem_pagamentos.fxml"));
+            // **Configura o Spring para gerenciar o controlador**
+            fxmlLoader.setControllerFactory(SpringContext::getBean);
+
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Pagamentos");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
