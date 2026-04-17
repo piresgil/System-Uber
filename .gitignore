@@ -1,0 +1,47 @@
+# ============================
+# Java / Maven / Spring Boot
+# ============================
+
+# Maven target directory
+target/
+
+# Logs
+*.log
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# ============================
+# IntelliJ IDEA
+# ============================
+.idea/
+*.iml
+out/
+
+# ============================
+# VS Code
+# ============================
+.vscode/
+
+# ============================
+# OS files
+# ============================
+.DS_Store
+Thumbs.db
+
+# ============================
+# Environment files
+# ============================
+.env
+*.env
+
+# ============================
+# Java server temp files
+# ============================
+hs_err_pid*
+replay_pid*
