@@ -7,13 +7,17 @@ import application.model.Carro;
 /**
  * Mapper responsável por converter entre Cartao e CartaoDTO.
  *
- * O DTO utiliza apenas o ID do carro, enquanto a entidade
- * utiliza o objeto Carro completo.
+ * O DTO utiliza apenas o ID do carro, enquanto a entidade utiliza
+ * o objeto Carro completo. O carregamento do Carro real deve ser
+ * feito no Service ou Controller.
  */
 public class CartaoMapper {
 
     /**
      * Converte entidade → DTO.
+     *
+     * @param entity entidade Cartao
+     * @return CartaoDTO com dados essenciais
      */
     public static CartaoDTO toDTO(Cartao entity) {
         if (entity == null) return null;
@@ -31,8 +35,13 @@ public class CartaoMapper {
     /**
      * Converte DTO → entidade.
      *
-     * O carro NÃO é carregado aqui — apenas criamos um objeto com ID.
-     * O CartaoController irá substituir este objeto pelo Carro real.
+     * Observação:
+     * - O Carro real NÃO é carregado aqui.
+     * - Apenas criamos um objeto Carro com ID para manter a referência.
+     * - O Service/Controller deve substituir pelo Carro real carregado do BD.
+     *
+     * @param dto CartaoDTO recebido da API
+     * @return entidade Cartao pronta para persistência
      */
     public static Cartao toEntity(CartaoDTO dto) {
         if (dto == null) return null;
@@ -44,7 +53,6 @@ public class CartaoMapper {
         c.setContrato(dto.getContrato());
         c.setNome(dto.getNome());
 
-        // Apenas cria um carro com ID — o controller carrega o real
         if (dto.getCarroId() != null) {
             Carro carro = new Carro();
             carro.setId(dto.getCarroId());

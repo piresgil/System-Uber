@@ -64,6 +64,8 @@ public class CarroController {
         carregarCarros();
         resetarBotoes();
         configurarListenersDeValidacao();
+
+        FormUtils.configurarListenerSelecao(tableView, btEditar);
     }
 
     private void configurarTabela() {
@@ -85,7 +87,7 @@ public class CarroController {
                 new ReadOnlyObjectWrapper<>(c.getValue().isAtivo()));
 
         tableView.setItems(listaCarros);
-        FormUtils.configurarListenerSelecao(tableView, btEditar);
+
     }
 
 
@@ -215,6 +217,9 @@ public class CarroController {
         btGravar.setDisable(true);
         btEliminar.setDisable(true);
         btRegistar.setDisable(true);
+
+        // O botão Editar só deve ficar ativo quando houver seleção na tabela
+        btEditar.setDisable(true);
         btEditar.setText("Editar");
         editMode = false;
 
