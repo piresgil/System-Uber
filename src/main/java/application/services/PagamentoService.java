@@ -1,5 +1,6 @@
 package application.services;
 
+import application.model.Cartao;
 import application.model.Colaborador;
 import application.model.Pagamento;
 import application.repositories.PagamentoRepository;
@@ -11,13 +12,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Serviço responsável pela lógica de negócio da entidade Pagamento.
- *
- * Aqui é feita a validação, carregamento do colaborador,
- * tratamento de exceções e atualização dos dados.
+ * Carrega entidades relacionadas, valida existência e trata exceções.
  */
 @Service
 public class PagamentoService {
@@ -28,6 +26,9 @@ public class PagamentoService {
     @Autowired
     private ColaboradorService colaboradorService;
 
+    @Autowired
+    private CartaoService cartaoService;
+
     /**
      * Retorna todos os pagamentos.
      */
@@ -37,31 +38,25 @@ public class PagamentoService {
 
     /**
      * Busca um pagamento pelo ID.
-     * Lança exceção caso não exista.
      */
     public Pagamento findById(Long id) {
-        Optional<Pagamento> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     /**
      * Insere um novo pagamento.
-     * Aqui carregamos o colaborador real usando o ID vindo do DTO.
+     * Carrega Colaborador e Cartão reais antes de salvar.
      */
     public Pagamento insert(Pagamento obj) {
 
-        // Carrega o colaborador real
-        if (obj.getColaborador() != null && obj.getColaborador().getId() != null) {
-            Colaborador col = colaboradorService.findById(obj.getColaborador().getId());
-            obj.setColaborador(col);
-        }
+        carregarEntidadesRelacionadas(obj);
 
         return repository.save(obj);
     }
 
     /**
      * Remove um pagamento pelo ID.
-     * Valida existência antes de remover.
      */
     public void delete(Long id) {
         try {
@@ -71,10 +66,10 @@ public class PagamentoService {
             repository.deleteById(id);
 
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw e;
 
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Não foi possível eliminar o pagamento. Verifique dependências.");
         }
     }
 
@@ -85,7 +80,6 @@ public class PagamentoService {
         try {
             Pagamento entity = repository.getReferenceById(id);
 
-            // Atualiza os campos
             updateData(entity, obj);
 
             return repository.save(entity);
@@ -96,11 +90,10 @@ public class PagamentoService {
     }
 
     /**
-     * Copia os dados permitidos do objeto recebido para o objeto persistido.
+     * Atualiza apenas os campos permitidos.
      */
     private void updateData(Pagamento entity, Pagamento obj) {
 
-        // Atualiza colaborador se necessário
         if (obj.getColaborador() != null && obj.getColaborador().getId() != null) {
             Colaborador col = colaboradorService.findById(obj.getColaborador().getId());
             entity.setColaborador(col);
@@ -109,5 +102,30 @@ public class PagamentoService {
         entity.setPlataforma(obj.getPlataforma());
         entity.setData(obj.getData());
         entity.setValor(obj.getValor());
+        entity.setTipoPagamento(obj.getTipoPagamento());
+        entity.setAtivo(obj.isAtivo());
+    }
+
+
+    /**
+     * Carrega Colaborador e Cartão reais a partir dos IDs.
+     */
+    private void carregarEntidadesRelacionadas(Pagamento obj) {
+
+        // Carregar colaborador real
+        if (obj.getColaborador() != null && obj.getColaborador().getId() != null) {
+            Colaborador col = colaboradorService.findById(obj.getColaborador().getId());
+            obj.setColaborador(col);
+        }
+
+    }
+
+    /**
+     * Soft delete — marca o pagamento como inativo.
+     */
+    public void softDelete(Long id) {
+        Pagamento p = findById(id);
+        p.setAtivo(false);
+        repository.save(p);
     }
 }

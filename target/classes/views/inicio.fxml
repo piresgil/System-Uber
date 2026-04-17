@@ -13,8 +13,8 @@
             <Button id="btCarros" fx:id="btCarros" mnemonicParsing="false" onAction="#onclickOnCarro" prefHeight="50.0" prefWidth="200.0" text="Carros" />
             <Button id="btDespesas" fx:id="btDespesas" mnemonicParsing="false" onAction="#onclickOnDespesas" prefHeight="50.0" prefWidth="200.0" text="Despesas" />
             <Button id="btcartao" fx:id="btcartao" mnemonicParsing="false" onAction="#onclickOnCartoes" prefHeight="50.0" prefWidth="200.0" text="Cartões" />
-            <Button id="btPagamentos" fx:id="btPagamentos" mnemonicParsing="false" onAction="#onclickOnOrderList" prefHeight="50.0" prefWidth="200.0" text="Pagamentos" />
-            <Button id="btLista" fx:id="btLista" mnemonicParsing="false" onAction="#onclickOnOrderList" prefHeight="50.0" prefWidth="200.0" text="Lista" />
+            <Button id="btPagamentos" fx:id="btPagamentos" mnemonicParsing="false" onAction="#onclickOnPagamento" prefHeight="50.0" prefWidth="200.0" text="Pagamentos" />
+            <Button id="btLista" fx:id="btLista" mnemonicParsing="false" onAction="#onclickOnPagamento" prefHeight="50.0" prefWidth="200.0" text="Lista" />
          </children>
       </VBox>
    </children>

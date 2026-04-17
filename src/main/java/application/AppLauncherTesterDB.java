@@ -180,23 +180,28 @@ public class AppLauncherTesterDB {
 
         // PAGAMENTOS
         Pagamento pagamento1 = new Pagamento(
-                null,
                 colaborador1,
-                "UBER",
+                Plataforma.UBER,
                 LocalDate.now(),
                 1000.0,
-                TipoPagamento.SEMANAL
+                TipoPagamento.MENSAL
         );
 
         Pagamento pagamento2 = new Pagamento(
-                null,
                 colaborador2,
-                "BOLT",
+                Plataforma.BOLT,
                 LocalDate.now(),
                 500.0,
                 TipoPagamento.SEMANAL
         );
 
+        Pagamento pagamento3 = new Pagamento(
+                colaborador2,
+                Plataforma.OUTRA,
+                LocalDate.now(),
+                500.0,
+                TipoPagamento.FIXO
+        );
 
 
         // Salvar entidades na ordem correta
@@ -205,7 +210,7 @@ public class AppLauncherTesterDB {
         carroRepository.saveAll(List.of(carro1, carro2, carro3, carro4, carro5));
         cartaoRepository.saveAll(List.of(cartao1, cartao2, cartao3, cartao4, cartao5));
         despesaRepository.saveAll(List.of(despesa1, despesa2, despesa3, despesa4, despesa5));
-        pagamentoRepository.saveAll(List.of(pagamento1, pagamento2));
+        pagamentoRepository.saveAll(List.of(pagamento1, pagamento2, pagamento3));
 
         System.out.println("Base de dados populada com sucesso!");
     }

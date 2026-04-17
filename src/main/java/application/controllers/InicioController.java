@@ -124,11 +124,11 @@ public class InicioController {
     }
 
     @FXML
-    protected void onclickOnOrderList() {
+    protected void onclickOnPagamento() {
         try {
             System.out.println("Click");
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/orderlist.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/pagamento.fxml"));
             // **Configura o Spring para gerenciar o controlador**
             fxmlLoader.setControllerFactory(SpringContext::getBean);
 
@@ -136,7 +136,7 @@ public class InicioController {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Lista Pagamentos");
+            stage.setTitle("Pagamentos");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -30,7 +30,7 @@
                         </AnchorPane>
                         <AnchorPane>
                             <children>
-                                <Label layoutX="95.0" layoutY="6.0" text="Cartao" />
+                                <Label layoutX="150.0" layoutY="6.0" text="Cartao" />
                                 <ComboBox fx:id="comboBoxCartao" layoutX="190.0" layoutY="2.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" />
                                 <Label layoutX="150.0" layoutY="45.0" text="Nome" />
                                 <TextField fx:id="txtNome" layoutX="190.0" layoutY="41.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" />
