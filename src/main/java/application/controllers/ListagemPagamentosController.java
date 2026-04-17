@@ -81,6 +81,7 @@ public class ListagemPagamentosController {
     private void carregarDados() {
         listaOriginal.setAll(pagamentoService.findAll());
         listaFiltrada.setAll(listaOriginal);
+        atualizarTotais();
     }
 
     private void configurarListeners() {
@@ -100,6 +101,8 @@ public class ListagemPagamentosController {
                         .filter(this::filtroTipo)
                         .collect(Collectors.toList())
         );
+
+        atualizarTotais();
     }
 
     private boolean filtroTexto(Pagamento p) {
@@ -147,37 +150,45 @@ public class ListagemPagamentosController {
     }
 
     private void atualizarTotais() {
-        double total = listaFiltrada.stream()
+
+        // Total geral
+        double totalGeral = listaFiltrada.stream()
                 .mapToDouble(Pagamento::getValor)
                 .sum();
 
-        lblTotal.setText("Total filtrado: " + String.format("%.2f €", total));
+        lblTotal.setText(String.format("Total: %.2f €", totalGeral));
 
         // Total por plataforma
-        String plataformas = listaFiltrada.stream()
-                .collect(Collectors.groupingBy(
-                        p -> p.getPlataforma().name(),
-                        Collectors.summingDouble(Pagamento::getValor)
-                ))
-                .entrySet()
-                .stream()
-                .map(e -> e.getKey() + ": " + String.format("%.2f €", e.getValue()))
-                .collect(Collectors.joining("   |   "));
+        if (comboPlataforma.getValue() != null) {
+            Plataforma plataforma = comboPlataforma.getValue();
 
-        lblTotalPlataforma.setText(plataformas);
+            double totalPlataforma = listaFiltrada.stream()
+                    .filter(p -> p.getPlataforma() == plataforma)
+                    .mapToDouble(Pagamento::getValor)
+                    .sum();
+
+            lblTotalPlataforma.setText(
+                    String.format("Plataforma (%s): %.2f €", plataforma.name(), totalPlataforma)
+            );
+        } else {
+            lblTotalPlataforma.setText("Plataforma: --");
+        }
 
         // Total por tipo
-        String tipos = listaFiltrada.stream()
-                .collect(Collectors.groupingBy(
-                        p -> p.getTipoPagamento().name(),
-                        Collectors.summingDouble(Pagamento::getValor)
-                ))
-                .entrySet()
-                .stream()
-                .map(e -> e.getKey() + ": " + String.format("%.2f €", e.getValue()))
-                .collect(Collectors.joining("   |   "));
+        if (comboTipo.getValue() != null) {
+            TipoPagamento tipo = comboTipo.getValue();
 
-        lblTotalTipo.setText(tipos);
+            double totalTipo = listaFiltrada.stream()
+                    .filter(p -> p.getTipoPagamento() == tipo)
+                    .mapToDouble(Pagamento::getValor)
+                    .sum();
+
+            lblTotalTipo.setText(
+                    String.format("Tipo (%s): %.2f €", tipo.name(), totalTipo)
+            );
+        } else {
+            lblTotalTipo.setText("Tipo: --");
+        }
     }
 
     @FXML

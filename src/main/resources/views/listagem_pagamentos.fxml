@@ -81,16 +81,18 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
 
-        <HBox spacing="20" layoutX="20" layoutY="630">
-            <children>
-                <Label fx:id="lblTotal" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                <Label fx:id="lblTotalPlataforma"/>
-                <Label fx:id="lblTotalTipo"/>
-            </children>
-        </HBox>
-
-
     </TableView>
+
+    <!-- TOTAIS (AGORA FORA DA TABELA) -->
+    <HBox spacing="20" layoutX="20" layoutY="630">
+        <children>
+            <Label fx:id="lblTotal" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalPlataforma"/>
+            <Label fx:id="lblTotalTipo"/>
+        </children>
+    </HBox>
+
+
     <HBox spacing="10">
         <children>
             <Button text="Exportar CSV" onAction="#onclickExportarCSV" prefWidth="150"/>
